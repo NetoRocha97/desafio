@@ -12,18 +12,23 @@ func ConfigRoutes(router *echo.Echo) *echo.Echo {
 
 	main := router.Group("/api")
 	{
-		estabelecimentos := main.Group("/estabelecimentos")
+		establishments := main.Group("/estabelecimentos")
 		{
-			estabelecimentos.GET("/:id", controllers.ShowEstablishment)
-			estabelecimentos.GET("/", controllers.ShowEstablishments)
-			estabelecimentos.POST("/", controllers.CreateEstablishment)
-			estabelecimentos.PUT("/", controllers.UpdateEstablishment)
-			estabelecimentos.DELETE("/:id", controllers.DeleteEstablishment)
+			establishments.GET("/:id", controllers.ShowEstablishment)
+			establishments.GET("/", controllers.ShowEstablishments)
+			establishments.POST("/", controllers.CreateEstablishment)
+			establishments.PUT("/", controllers.UpdateEstablishment)
+			establishments.DELETE("/:id", controllers.DeleteEstablishment)
+			establishments.GET("/:id/lojas", controllers.ShowStoresByEstablishment)
 		}
-		// lojas := main.Group("lojas")
-		// {
-
-		// }
+		stores := main.Group("/lojas")
+		{
+			stores.GET("/:id", controllers.ShowStore)
+			stores.GET("/", controllers.ShowStores)
+			stores.POST("/", controllers.CreateStore)
+			stores.PUT("/", controllers.UpdateStore)
+			stores.DELETE("/:id", controllers.DeleteStore)
+		}
 	}
 
 	return router
