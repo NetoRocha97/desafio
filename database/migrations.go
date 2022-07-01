@@ -7,6 +7,6 @@ import (
 )
 
 func RunMigrations(db *gorm.DB) {
-	db.AutoMigrate(models.Estabelecimento{})
-	db.AutoMigrate(models.Loja{})
+	db.AutoMigrate(models.Establishment{})
+	db.AutoMigrate(models.Store{})
 }
