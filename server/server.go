@@ -3,6 +3,7 @@ package server
 import (
 	"log"
 	"modulo/server/routes"
+	"modulo/validation"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -22,6 +23,7 @@ func NewServer() Server {
 
 func (base *Server) Run() {
 	s := base.server
+	s.Validator = validation.NewValidationUtil() //Aqui
 	s.Use(middleware.Logger())
 	s.Use(middleware.Recover())
 	routes.ConfigRoutes(s)
@@ -29,3 +31,5 @@ func (base *Server) Run() {
 
 	log.Print("Server rodando na porta: " + base.port)
 }
+
+
