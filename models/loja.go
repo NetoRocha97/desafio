@@ -7,6 +7,6 @@ type Loja struct {
 	Endereco    string `json:"endereco"`
 	Estado      string `json:"estado"`
 	Cidade      string `json:"cidade"`
-	Cep         int    `json:"cep"`
+	Cep         string `json:"cep"`
 	Numero      int    `json:"numero"`
 }
