@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"fmt"
-	"modulo/database"
 	"modulo/models"
+	"modulo/service"
 	"net/http"
 	"strconv"
 
@@ -19,9 +19,9 @@ func ShowEstablishment(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, echo.Map{"erro": "O ID deve ser inteiro"})
 	}
 
-	db := database.GetDatabase()
+	service := service.CamadaService()
 	var establishment models.Establishment
-	err = db.First(&establishment, id).Error
+	err = service.First(&establishment, id).Error
 
 	if err != nil {
 		return c.JSON(http.StatusNotFound, echo.Map{
@@ -34,11 +34,11 @@ func ShowEstablishment(c echo.Context) error {
 
 func ShowEstablishments(c echo.Context) error {
 
-	db := database.GetDatabase()
+	service := service.CamadaService()
 
 	var establishments []models.Establishment
 
-	err := db.Find(&establishments).Error
+	err := service.Find(&establishments).Error
 
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
@@ -57,8 +57,8 @@ func CreateEstablishment(c echo.Context) error {
 		})
 	}
 
-	db := database.GetDatabase()
-	err = db.Create(&establishment).Error
+	service := service.CamadaService()
+	err = service.Create(&establishment).Error
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{
@@ -80,8 +80,8 @@ func UpdateEstablishment(c echo.Context) error {
 	}
 
 	var optionalEstablishment models.Establishment
-	db := database.GetDatabase()
-	err = db.First(&optionalEstablishment, updatedEstablishment.ID).Error
+	service := service.CamadaService()
+	err = service.First(&optionalEstablishment, updatedEstablishment.ID).Error
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{
@@ -89,7 +89,7 @@ func UpdateEstablishment(c echo.Context) error {
 		})
 	}
 
-	err = db.Save(&updatedEstablishment).Error
+	err = service.Save(&updatedEstablishment).Error
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{
@@ -110,8 +110,8 @@ func DeleteEstablishment(c echo.Context) error {
 		})
 	}
 
-	db := database.GetDatabase()
-	err = db.First(&models.Establishment{}, id).Error
+	service := service.CamadaService()
+	err = service.First(&models.Establishment{}, id).Error
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{
@@ -119,7 +119,7 @@ func DeleteEstablishment(c echo.Context) error {
 		})
 	}
 
-	err = db.Delete(&models.Establishment{}, id).Error
+	err = service.Delete(&models.Establishment{}, id).Error
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{
@@ -140,10 +140,10 @@ func ShowStoresByEstablishment(c echo.Context) error {
 		})
 	}
 
-	db := database.GetDatabase()
+	service := service.CamadaService()
 	var stores []models.Store
 
-	err = db.Find(&stores).Where("establishment_id = ?", id).Error
+	err = service.Find(&stores).Where("establishment_id = ?", id).Error
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{

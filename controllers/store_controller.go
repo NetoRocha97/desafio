@@ -2,8 +2,9 @@ package controllers
 
 import (
 	"fmt"
-	"modulo/database"
+
 	"modulo/models"
+	"modulo/service"
 	"net/http"
 	"strconv"
 
@@ -20,9 +21,9 @@ func ShowStore(c echo.Context) error {
 		})
 	}
 
-	db := database.GetDatabase()
+	service := service.CamadaService()
 	var store models.Store
-	err = db.First(&store, id).Error
+	err = service.First(&store, id).Error
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{
@@ -35,8 +36,8 @@ func ShowStore(c echo.Context) error {
 
 func ShowStores(c echo.Context) error {
 	var stores []models.Store
-	db := database.GetDatabase()
-	err := db.Find(&stores).Error
+	service := service.CamadaService()
+	err := service.Find(&stores).Error
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{
@@ -57,8 +58,8 @@ func CreateStore(c echo.Context) error {
 		})
 	}
 
-	db := database.GetDatabase()
-	err = db.Create(&store).Error
+	service := service.CamadaService()
+	err = service.Create(&store).Error
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{
@@ -80,8 +81,8 @@ func UpdateStore(c echo.Context) error {
 	}
 
 	var optionalStore models.Store
-	db := database.GetDatabase()
-	err = db.First(&optionalStore, updatedStore.ID).Error
+	service := service.CamadaService()
+	err = service.First(&optionalStore, updatedStore.ID).Error
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{
@@ -89,7 +90,7 @@ func UpdateStore(c echo.Context) error {
 		})
 	}
 
-	err = db.Save(&updatedStore).Error
+	err = service.Save(&updatedStore).Error
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{
@@ -110,8 +111,8 @@ func DeleteStore(c echo.Context) error {
 		})
 	}
 
-	db := database.GetDatabase()
-	err = db.First(&models.Store{}, id).Error
+	service := service.CamadaService()
+	err = service.First(&models.Store{}, id).Error
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{
@@ -119,7 +120,7 @@ func DeleteStore(c echo.Context) error {
 		})
 	}
 
-	err = db.Delete(&models.Store{}, id).Error
+	err = service.Delete(&models.Store{}, id).Error
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{
