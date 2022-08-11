@@ -19,9 +19,7 @@ func ShowEstablishment(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, echo.Map{"erro": "O ID deve ser inteiro"})
 	}
 
-	service := service.CamadaService()
-	var establishment models.Establishment
-	err = service.First(&establishment, id).Error
+	establishment, err := service.ShowEstablishmentService(id)
 
 	if err != nil {
 		return c.JSON(http.StatusNotFound, echo.Map{
@@ -49,7 +47,6 @@ func ShowEstablishments(c echo.Context) error {
 func CreateEstablishment(c echo.Context) error {
 	var establishment models.Establishment
 	err := c.Bind(&establishment)
-	//Validar dados vazios ou nulos
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{
