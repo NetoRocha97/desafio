@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"modulo/models"
 	"modulo/service"
 	"net/http"
@@ -32,12 +31,9 @@ func ShowEstablishment(c echo.Context) error {
 
 func ShowEstablishments(c echo.Context) error {
 
-	service := service.CamadaService()
-
-	var establishments []models.Establishment
-
-	err := service.Find(&establishments).Error
-
+	
+	establishments, err := service.ShowEstablishmentsService()
+	
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
@@ -54,8 +50,7 @@ func CreateEstablishment(c echo.Context) error {
 		})
 	}
 
-	service := service.CamadaService()
-	err = service.Create(&establishment).Error
+	err = service.CreateEstablishmentService(establishment)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{
@@ -76,25 +71,17 @@ func UpdateEstablishment(c echo.Context) error {
 		})
 	}
 
-	var optionalEstablishment models.Establishment
-	service := service.CamadaService()
-	err = service.First(&optionalEstablishment, updatedEstablishment.ID).Error
-
-	if err != nil {
+	service.UpdateEstablishmentService(updatedEstablishment)
+	
+	optionalEstablishment, errText := service.UpdateEstablishmentService(updatedEstablishment)
+	
+	if errText != "" {
 		return c.JSON(http.StatusBadRequest, echo.Map{
-			"erro": fmt.Sprintf("O estabelecimento com ID %d não existe", updatedEstablishment.ID),
+			"erro": errText,
 		})
 	}
 
-	err = service.Save(&updatedEstablishment).Error
-
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, echo.Map{
-			"erro": "Não foi possível atualizar o estabelecimento",
-		})
-	}
-
-	return c.JSON(http.StatusOK, updatedEstablishment)
+	return c.JSON(http.StatusOK, optionalEstablishment)
 }
 
 func DeleteEstablishment(c echo.Context) error {
@@ -107,20 +94,11 @@ func DeleteEstablishment(c echo.Context) error {
 		})
 	}
 
-	service := service.CamadaService()
-	err = service.First(&models.Establishment{}, id).Error
+	errText := service.DeleteEstablishmentService(id)
 
-	if err != nil {
+	if errText != "" {
 		return c.JSON(http.StatusBadRequest, echo.Map{
-			"erro": "Não existe nenhum estabelecimento com este ID",
-		})
-	}
-
-	err = service.Delete(&models.Establishment{}, id).Error
-
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, echo.Map{
-			"erro": "Não foi possível deletar o estabelecimento",
+			"erro": errText,
 		})
 	}
 
