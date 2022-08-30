@@ -31,7 +31,6 @@ func ShowEstablishment(c echo.Context) error {
 
 func ShowEstablishments(c echo.Context) error {
 
-	
 	establishments, err := service.ShowEstablishmentsService()
 	
 	if err != nil {
