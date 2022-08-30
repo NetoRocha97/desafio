@@ -18,7 +18,8 @@ func EstablishmentView(v models.Establishment) ServiceEstablishment{
 	RazaoSocial: v.RazaoSocial,
 	Endereco: v.Endereco,
 	Cep: v.Cep,
+	Estado: v.Estado,
 	Cidade: v.Cidade,
-	Stores: v.Stores,
-	Numero: v.Numero}
+	Numero: v.Numero,
+	Stores: v.Stores}
 }
