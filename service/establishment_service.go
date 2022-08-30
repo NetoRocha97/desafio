@@ -1,13 +1,10 @@
 package service
 
 import (
-	// "modulo/controllers"
 	"fmt"
 	"modulo/database"
 	"modulo/models"
 	"modulo/view"
-
-	// "github.com/labstack/echo"
 
 	"gorm.io/gorm"
 )
