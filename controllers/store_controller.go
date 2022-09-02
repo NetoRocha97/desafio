@@ -76,7 +76,7 @@ func UpdateStore(c echo.Context) error {
 	service.UpdateStoreService(updatedStore)
 
 	optionalStore, errText := service.UpdateStoreService(updatedStore)
-	
+
 	if errText != "" {
 		return c.JSON(http.StatusBadRequest, echo.Map{
 			"erro": errText,
