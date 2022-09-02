@@ -33,8 +33,14 @@ func ShowStoresService() ([]models.Store, error) {
 func CreateStoreService(store models.Store) error {
 
 	db := database.GetDatabase()
-
 	err := db.Create(&store).Error
+
+	var optionalStore models.Store
+	err2 := db.First(&optionalStore, optionalStore.EstablishmentID).Error
+
+	if optionalStore.EstablishmentID < 1 {
+		return err2
+	}
 
 	return err
 
@@ -57,6 +63,10 @@ func UpdateStoreService(updatedStore models.Store) (models.Store, string) {
 
 	if err != nil {
 		errText = "Não foi possível atualizar a loja"
+	}
+
+	if optionalStore.EstablishmentID < 1 {
+		errText = "Estabelecimento inválido"
 	}
 
 	return optionalStore, errText
