@@ -1,0 +1,378 @@
+openapi: 3.0.3
+info:
+  title: Desafio SNet - OpenAPI 3.0
+  description: |-
+    Aplicação cadastro de lojas e estabelecimentos
+  termsOfService: https://github.com/NetoRocha97/desafio
+  contact:
+    email: jnetorochaa@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+servers:
+  - url: https://desafio.swagger.io/api/v3
+paths:
+  /establishment_controller/ShowStoresByEstablishment:
+    get:
+      summary: Encontra uma loja em um estabelecimento pelo ID
+      tags:
+        - Establishment
+      responses:
+        '200':
+          description: Retorno da consulta do estabelecimento
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  estabelecimento:
+                    type: integer
+                    example: 1
+                  razaoSocial:
+                    type: string
+                    example: 'Estabelecimento Teste'
+        '400':
+          description: Não foi possível acessar o banco de dados
+        '404':
+          description: Store not found
+          
+  /establishment_controller/ShowEstablishment:
+    get:
+      summary: Encontra o estabelecimento pelo ID
+      tags:
+        - Establishment
+      responses:
+        '200':
+          description: Encontra o estabelecimento pelo ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  estabelecimento:
+                    type: integer
+                    example: 1
+                  razaoSocial:
+                    type: string
+        '400':
+          description: O ID deve ser inteiro
+        '404':
+          description: Não existe nenhum estabelecimento com este ID
+          
+  /establishment_controller/ShowEstablishments:
+    get:
+      summary: Encontra estabelecimentos na lista de estabelecimentos
+      tags:
+        - Establishment
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  estabelecimento:
+                    type: integer
+                    example: 1
+                  razaoSocial:
+                    type: array
+                    items:
+                      $ref: 'controllers/establishment_controller/ShowEstablishments'
+        '400':
+          description: Invalid tag value
+        
+  /establishment_controller/CreateEstablishment:
+    post:
+      summary: Cria um estabelecimento
+      tags:
+        - Establishment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                numeroEstabelecimento:
+                  type: integer
+                  example: 1
+                razaoSocial:
+                  type: string
+                  example: 'Estabelecimento Teste'
+      responses:
+        '200':
+          description: Retorno da consulta do estabelecimento
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  estabelecimento:
+                    type: integer
+                    example: 1
+                  razaoSocial:
+                    type: string
+                    example: 'Estabelecimento Teste'
+        '400':
+          description: Não foi possível acessar o banco de dados
+        '404':
+          description: Store not found
+          
+  /establishment_controller/UpdateEstablishment:
+    put:
+      summary: Atualização de um estabelicimento existente
+      tags:
+        - Establishment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                numeroEstabelecimento:
+                  type: integer
+                  example: 1
+                razaoSocial:
+                  type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  estabelecimento:
+                    type: integer
+                    example: 1
+                  razaoSocial:
+                    type: string
+        '400':
+          description: O corpo passado não é um estabelecimento
+        '404':
+          description: Não foi possível atualizar o estabelecimento
+          
+  /establishment_controller/DeleteEstablishment:
+    delete:
+      summary: Deleta um estabelecimento
+      tags:
+        - Establishment
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  estabelecimento:
+                    type: integer
+                    example: 1
+                  razaoSocial:
+                    type: string
+        '400':
+          description: Não existe nenhum estabelecimento com este ID
+        '404':
+          description: Não foi possível deletar o estabelecimento
+          
+  /store_controller/ShowStore:
+    get:
+      summary: Encontra uma loja pelo ID
+      tags:
+        - Store
+      responses:
+        '200':
+          description: Encontra uma loja pelo ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  loja:
+                    type: integer
+                    example: 1
+                  razaoSocial:
+                    type: string
+        '400':
+          description: O ID deve ser inteiro
+        '404':
+          description: Não foi possível encontrar a loja       
+          
+  /store_controller/ShowStores:
+    get:
+      summary: Encontra lojas na lista de lojas
+      tags:
+        - Store
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  loja:
+                    type: integer
+                    example: 1
+                  razaoSocial:
+                    type: array
+                    items:
+                      $ref: 'controllers/store_controller/ShowStores'
+        '400':
+          description: Não foi possível listar as lojas
+        
+  /store_controller/CreateStore:
+    post:
+      summary: Cria uma loja
+      tags:
+        - Store
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                numeroLoja:
+                  type: integer
+                  example: 1
+                razaoSocial:
+                  type: string
+                  example: 'Loja Teste'
+      responses:
+        '200':
+          description: Retorno da consulta da loja
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  loja:
+                    type: integer
+                    example: 1
+                  razaoSocial:
+                    type: string
+                    example: 'Loja Teste'
+        '400':
+          description: Não foi possível criar a loja
+        '404':
+          description: Store not found
+          
+  /store_controller/UpdateStore:
+    put:
+      summary: Atualização de uma loja existente
+      tags:
+        - Store
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                numeroLoja:
+                  type: integer
+                  example: 1
+                razaoSocial:
+                  type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  loja:
+                    type: integer
+                    example: 1
+                  razaoSocial:
+                    type: string
+        '400':
+          description: O corpo passado não é uma loja
+        '404':
+          description: Não foi possível atualizar a loja
+          
+  /store_controller/DeleteStore:
+    delete:
+      summary: Deleta uma loja
+      tags:
+        - Store
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  loja:
+                    type: integer
+                    example: 1
+                  razaoSocial:
+                    type: string
+        '400':
+          description: Não existe nenhuma loja com este ID
+        '404':
+          description: Não foi possível deletar a loja
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
