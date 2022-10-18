@@ -1,0 +1,37 @@
+FROM golang:1.16.0-alpine3.12 as build
+
+ENV GOOS=linux
+ENV GOARCH=amd64
+ENV CGO_ENABLED=0
+ENV GO111MODULE=on
+ENV WORKSPACE=${GOPATH}/src/app
+
+RUN apk add --no-cache --virtual .build
+
+WORKDIR ${WORKSPACE}
+
+COPY go.mod .
+COPY go.sum .
+
+RUN go mod download
+
+COPY . .
+
+RUN cp api/swagger.yaml cmd/app/swagger.yaml
+RUN go build -ldflags '-extldflags "-static"' -o bin/app cmd/app/main.go
+
+FROM alpine:3.12.1
+
+ENV TZ=America/RioTinto
+ENV WORKSPACE=/workspace
+
+RUN apk add --no-cache --virtual .build-deps ca-certificates tzdata \
+    && cp /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
+
+WORKDIR ${WORKSPACE}
+
+RUN mkdir -p ${WORKSPACE}/tmp/cupom
+
+COPY --from=build /go/src/app/bin ${WORKSPACE}
+
+CMD ["./app"]
