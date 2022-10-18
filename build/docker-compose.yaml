@@ -1,0 +1,31 @@
+version: '3.3'
+
+networks:
+  default:
+    external:
+      name: network
+
+services:
+  api-nome:
+    stop_signal: SIGINT
+    container_name: nome
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    deploy:
+      resources:
+          limits:
+            cpus: '1.00'
+            memory: 1024M
+          reservations:
+            memory: 200M
+    logging:
+      driver: json-file
+      options:
+        max-size: '300m'
+        max-file: '5'
+    ports:
+      - 1336:1336
+    environment:
+      - VARIAVEL_1=1
+      - VARIAVEL_2=1
