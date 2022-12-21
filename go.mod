@@ -2,9 +2,11 @@ module modulo
 
 go 1.18
 
-require gorm.io/driver/mysql v1.3.4
-
-require github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
+require (
+	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
+	github.com/go-playground/validator v9.31.0+incompatible // indirect
+	github.com/reactima/echo-bind-validate v0.0.0-20170512220053-141310fd443b // indirect
+)
 
 require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
